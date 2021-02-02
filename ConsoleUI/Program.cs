@@ -11,7 +11,7 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             //Create a CarManager
-            CarManager carManager = new CarManager(new InMemoryCarDal());
+            ICarService carManager = new CarManager(new InMemoryCarDal());
 
             // Add a new car to carManager
             Car carToAdd = new Car() { Id = 5, BrandId = 4, ColorId = 1, DailyPrice = 250000, ModelYear = 2018, Description = "Toyota Auris Hybrid" };
