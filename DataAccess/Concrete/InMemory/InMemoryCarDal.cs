@@ -25,7 +25,6 @@ namespace DataAccess.Concrete.InMemory
         public void Add(Car car)
         {
             _cars.Add(car);
-            Console.WriteLine("Car has been added: "+ car.Description + "\n");
 
         }
 
@@ -33,7 +32,6 @@ namespace DataAccess.Concrete.InMemory
         {
             Car carToDelete = _cars.SingleOrDefault(c => c.Id == car.Id);
             _cars.Remove(carToDelete);
-            Console.WriteLine("Car has been deleted: Car"+ carToDelete.Id+ ":"+carToDelete.Description+"\n");
         }
 
         public List<Car> GetAll()
@@ -53,7 +51,6 @@ namespace DataAccess.Concrete.InMemory
             carToUpdate.ColorId = car.ColorId;
             carToUpdate.DailyPrice = car.DailyPrice;
             carToUpdate.Description = car.Description;
-            Console.WriteLine("\nCar has been updated: " + carToUpdate.Id + " - " + carToUpdate.Description + "(" + carToUpdate.ModelYear + ")\n");
 
         }
     }

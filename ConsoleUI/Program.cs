@@ -14,13 +14,18 @@ namespace ConsoleUI
             CarManager carManager = new CarManager(new InMemoryCarDal());
 
             // Add a new car to carManager
-            carManager.Add(new Car() { Id = 5, BrandId = 4, ColorId = 1, DailyPrice = 250000, ModelYear = 2018, Description = "Toyota Auris Hybrid" });
+            Car carToAdd = new Car() { Id = 5, BrandId = 4, ColorId = 1, DailyPrice = 250000, ModelYear = 2018, Description = "Toyota Auris Hybrid" };
+            carManager.Add(carToAdd);
+            Console.WriteLine("Car has been added: " + carToAdd.Description + "\n");
 
             //List all cars in carManager
             ListAllVehicles(carManager);
-            
+
             //Update Car 3
-            carManager.Update(new Car() { Id = 3, BrandId = 2, ColorId = 1, ModelYear = 2015, DailyPrice = 450000, Description = "BMW 5 520i Executive" });
+            Car carToUpdate = new Car() { Id = 3, BrandId = 2, ColorId = 1, ModelYear = 2015, DailyPrice = 450000, Description = "BMW 5 520i Executive" };
+            carManager.Update(carToUpdate);
+            Console.WriteLine("\nCar has been updated: " + carToUpdate.Id + " -" + carToUpdate.Description + "(" + carToUpdate.ModelYear + ")\n");
+
 
             //Delete Car 2
             Console.WriteLine("Select a car to delete (Car Id)");
@@ -28,6 +33,8 @@ namespace ConsoleUI
             int delNo = v;
             Car carToDelete = carManager.GetById(delNo);
             carManager.Delete(carToDelete);
+            Console.WriteLine("Car has been deleted: Car" + carToDelete.Id + ":" + carToDelete.Description + "\n");
+
 
             //List all cars in carManager
             ListAllVehicles(carManager);
