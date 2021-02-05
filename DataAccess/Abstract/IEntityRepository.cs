@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DataAccess.Abstract
 {
-    interface IEntityRepository<T> where T:class, IEntity, new()
+    public interface IEntityRepository<T> where T:class, IEntity, new()
     {
         List<T> GetAll(Expression<Func<T,bool>> filter = null);
         T GetById(Expression<Func<T, bool>> filter);
