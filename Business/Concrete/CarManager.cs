@@ -20,7 +20,20 @@ namespace Business.Concrete
 
         public void Add(Car car)
         {
-            _carDal.Add(car);
+
+
+
+            if (car.Description.Length > 1 && car.DailyPrice > 0)
+            {
+                _carDal.Add(car); 
+            } else
+            {
+                if (car.Description.Length < 2) { Console.WriteLine("Description must be at least 2 characters"); }
+                if (car.DailyPrice < 1) { Console.WriteLine("Daily Price must be bigger than 0"); }
+                
+            }
+
+
         }
 
         public void Delete(Car car)
@@ -53,5 +66,6 @@ namespace Business.Concrete
             _carDal.Update(car);
         }
 
+       
     }
 }
