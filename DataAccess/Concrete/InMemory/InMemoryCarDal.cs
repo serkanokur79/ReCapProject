@@ -16,10 +16,10 @@ namespace DataAccess.Concrete.InMemory
         {
             _cars = new List<Car>()
             {
-                new Car(){Id=1, BrandId=1, ColorId=1, ModelYear=new DateTime(2014), DailyPrice=380000, Description= "Audi A6 Sedan 2.0 TDI" },
-                new Car(){Id=2, BrandId=2, ColorId=1, ModelYear=new DateTime(2012), DailyPrice=315000, Description= "BMW 3 320d Luxury\t" },
-                new Car(){Id=3, BrandId=2, ColorId=1, ModelYear=new DateTime(2015), DailyPrice=419000, Description= "BMW 5 520i Executive" },
-                new Car(){Id=4, BrandId=3, ColorId=2, ModelYear=new DateTime(2013), DailyPrice=1145000, Description= "Mercedes-Benz GL 350 CDI" },
+                new Car(){Id=1, BrandId=1, ColorId=1, ModelYear=2014, DailyPrice=380000, Description= "Audi A6 Sedan 2.0 TDI" },
+                new Car(){Id=2, BrandId=2, ColorId=1, ModelYear=2012, DailyPrice=315000, Description= "BMW 3 320d Luxury\t" },
+                new Car(){Id=3, BrandId=2, ColorId=1, ModelYear=2015, DailyPrice=419000, Description= "BMW 5 520i Executive" },
+                new Car(){Id=4, BrandId=3, ColorId=2, ModelYear=2013, DailyPrice=1145000, Description= "Mercedes-Benz GL 350 CDI" },
             };
         }
 
@@ -35,20 +35,18 @@ namespace DataAccess.Concrete.InMemory
             _cars.Remove(carToDelete);
         }
 
-        public List<Car> GetAll()
+   
+        public List<Car> GetAll(Expression<Func<Car,bool>> filter = null)
         {
-            return _cars;
-        }
-
-        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
-        {
+            //  return filter == null ? _cars.ToList() : _cars.Where(filter).ToList();
             return _cars;
         }
 
       
-        public Car GetById(Expression<Func<Car, bool>> filter)
+        public Car Get(Expression<Func<Car,bool>> filter)
         {
-            return null;
+            // return _cars.SingleOrDefault(filter).ToList();
+               return null;
         }
 
         public void Update(Car car)
