@@ -80,7 +80,7 @@ namespace ConsoleUI
 
             foreach (Car car in carService.GetAllCars())
             {
-                Console.WriteLine("{0} - {1} \t {2} \t {3} \t {4} \t {5}", car.Id, car.Description, car.ModelYear, car.DailyPrice, car.BrandId, car.ColorId);
+                Console.WriteLine("{0} - {1} \t {2} \t {3} \t {4} \t\t {5}", car.Id, car.Description, car.ModelYear, car.DailyPrice, car.BrandId, car.ColorId);
             }
         }
     }
