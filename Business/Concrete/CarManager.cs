@@ -3,6 +3,8 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Business.Concrete
@@ -26,19 +28,30 @@ namespace Business.Concrete
             _carDal.Delete(car);
         }
 
-        public List<Car> GetAll()
+        public List<Car> GetAllCars()
         {
-            return _carDal.GetAll();
+           return  _carDal.GetAll();
         }
 
-        public Car GetById(int id)
+        public Car GetCarById(int Id)
         {
-            return _carDal.GetById(id);
+            return _carDal.Get(c => c.BrandId == Id);
+        }
+
+        public List<Car> GetCarsByBrandId(int Id)
+        {
+            return _carDal.GetAll(c => c.BrandId == Id);
+        }
+
+        public List<Car> GetCarsByColorId(int Id)
+        {
+            return _carDal.GetAll(c => c.ColorId == Id);
         }
 
         public void Update(Car car)
         {
             _carDal.Update(car);
         }
+
     }
 }
