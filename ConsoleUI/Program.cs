@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Concrete;
+using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using System;
@@ -11,12 +12,15 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             //Create a CarManager
-            ICarService carManager = new CarManager(new InMemoryCarDal());
+            ICarService carManager = new CarManager(new EfCarDal());
+
+            //List all cars in carManager
+            ListAllVehicles(carManager);
 
             // Add a new car to carManager
-            Car carToAdd = new Car() { Id = 5, BrandId = 4, ColorId = 1, DailyPrice = 250000, ModelYear = 2018, Description = "Toyota Auris Hybrid" };
+            Car carToAdd = new Car() { Id=10 ,BrandId = 4, ColorId = 2, DailyPrice = 290000, ModelYear = 2019, Description = "Toyota Auris Hybrid" };
             carManager.Add(carToAdd);
-            Console.WriteLine("Car has been added: " + carToAdd.Description + "\n");
+            Console.WriteLine("\nCar has been added: " + carToAdd.Description + "\n");
 
             //List all cars in carManager
             ListAllVehicles(carManager);
@@ -26,19 +30,40 @@ namespace ConsoleUI
             carManager.Update(carToUpdate);
             Console.WriteLine("\nCar has been updated: " + carToUpdate.Id + " -" + carToUpdate.Description + "(" + carToUpdate.ModelYear + ")\n");
 
-
-            //Delete Car 2
-            Console.WriteLine("Select a car to delete (Car Id)");
-            int v = Convert.ToInt32(Console.ReadLine());
-            int delNo = v;
-            Car carToDelete = carManager.GetById(delNo);
-            carManager.Delete(carToDelete);
-            Console.WriteLine("Car has been deleted: Car" + carToDelete.Id + ":" + carToDelete.Description + "\n");
-
-
             //List all cars in carManager
             ListAllVehicles(carManager);
 
+            ////Delete a Car 
+            //Console.WriteLine("Select a car to delete (Car Id)");
+            //int v = Convert.ToInt32(Console.ReadLine());
+            //Car carToDelete = carManager.GetCarById(v);
+            //carManager.Delete(carToDelete);
+            //Console.WriteLine("\nCar has been deleted: Car" + carToDelete.Id + ":" + carToDelete.Description + "\n");
+
+            ////List all cars in carManager
+            //ListAllVehicles(carManager);
+
+            //Get Cars by BrandId
+            Console.WriteLine("\nSelect a BrandId to list the cars (1-4)");
+            int b = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("=========== All cars in Car Manager with BrandId {0}) ===========", b);
+            Console.WriteLine("\n \t Car \t\t\t Year \t Price(TL)");
+            foreach (Car car in carManager.GetCarsByBrandId(b))
+            {
+                Console.WriteLine("{0} - {1} \t {2} \t {3}", car.Id, car.Description, car.ModelYear, car.DailyPrice);
+            }
+
+            //Get Cars by ColorId
+            Console.WriteLine("\nSelect a ColorId to list the cars (1-6)");
+            int c = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("=========== All cars in Car Manager with ColorId {0}) ===========", c);
+            Console.WriteLine("\n \t Car \t\t\t Year \t Price(TL)");
+            foreach (Car car in carManager.GetCarsByColorId(c))
+            {
+                Console.WriteLine("{0} - {1} \t {2} \t {3}", car.Id, car.Description, car.ModelYear, car.DailyPrice);
+            }
 
         }
 
@@ -47,7 +72,7 @@ namespace ConsoleUI
             Console.WriteLine("=========== All cars in Car Manager ===========");
             Console.WriteLine("\n \t Car \t\t\t Year \t Price(TL)");
 
-            foreach (Car car in carService.GetAll())
+            foreach (Car car in carService.GetAllCars())
             {
                 Console.WriteLine("{0} - {1} \t {2} \t {3}", car.Id, car.Description, car.ModelYear, car.DailyPrice);
             }
