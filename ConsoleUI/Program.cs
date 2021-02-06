@@ -22,6 +22,12 @@ namespace ConsoleUI
             carManager.Add(carToAdd);
             Console.WriteLine("\nCar has been added: " + carToAdd.Description + "\n");
 
+            // Try to add invalid car data to carManager
+            Car inValidCarToAdd = new Car() { Id=11, BrandId = 4, ColorId = 3, DailyPrice = 0, ModelYear = 2019, Description = "T" };
+            carManager.Add(inValidCarToAdd);
+           
+
+
             //List all cars in carManager
             ListAllVehicles(carManager);
 
@@ -69,12 +75,12 @@ namespace ConsoleUI
 
         private static void ListAllVehicles(ICarService carService)
         {
-            Console.WriteLine("=========== All cars in Car Manager ===========");
-            Console.WriteLine("\n \t Car \t\t\t Year \t Price(TL)");
+            Console.WriteLine("\n=========== All cars in Car Manager ===========");
+            Console.WriteLine("\n \t Car \t\t\t Year \t Price(TL) \t BrandId \t ColorId");
 
             foreach (Car car in carService.GetAllCars())
             {
-                Console.WriteLine("{0} - {1} \t {2} \t {3}", car.Id, car.Description, car.ModelYear, car.DailyPrice);
+                Console.WriteLine("{0} - {1} \t {2} \t {3} \t {4} \t {5}", car.Id, car.Description, car.ModelYear, car.DailyPrice, car.BrandId, car.ColorId);
             }
         }
     }
