@@ -11,77 +11,165 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            //Create a CarManager
-            ICarService carManager = new CarManager(new EfCarDal());
+            DisplayMenuTest();
+            // CarManagerOldTest();
+            //ColorManagerTest();
+            // BrandManagerTest();
+            //CarManagerTest();
 
-            //List all cars in carManager
-            ListAllVehicles(carManager);
-
-            // Add a new car to carManager
-            Car carToAdd = new Car() { Id=10 ,BrandId = 4, ColorId = 2, DailyPrice = 290000, ModelYear = 2019, Description = "Toyota Auris Hybrid" };
-            carManager.Add(carToAdd);
-            Console.WriteLine("\nCar has been added: " + carToAdd.Description + "\n");
-
-            // Try to add invalid car data to carManager
-            Car inValidCarToAdd = new Car() { Id=11, BrandId = 4, ColorId = 3, DailyPrice = 0, ModelYear = 2019, Description = "T" };
-            carManager.Add(inValidCarToAdd);
-           
-
-
-            //List all cars in carManager
-            ListAllVehicles(carManager);
-
-            //Update Car 3
-            Car carToUpdate = new Car() { Id = 3, BrandId = 2, ColorId = 1, ModelYear = 2015, DailyPrice = 450000, Description = "BMW 5 520i Executive" };
-            carManager.Update(carToUpdate);
-            Console.WriteLine("\nCar has been updated: " + carToUpdate.Id + " -" + carToUpdate.Description + "(" + carToUpdate.ModelYear + ")\n");
-
-            //List all cars in carManager
-            ListAllVehicles(carManager);
-
-            ////Delete a Car 
-            //Console.WriteLine("Select a car to delete (Car Id)");
-            //int v = Convert.ToInt32(Console.ReadLine());
-            //Car carToDelete = carManager.GetCarById(v);
-            //carManager.Delete(carToDelete);
-            //Console.WriteLine("\nCar has been deleted: Car" + carToDelete.Id + ":" + carToDelete.Description + "\n");
-
-            ////List all cars in carManager
-            //ListAllVehicles(carManager);
-
-            //Get Cars by BrandId
-            Console.WriteLine("\nSelect a BrandId to list the cars (1-4)");
-            int b = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("=========== All cars in Car Manager with BrandId {0}) ===========", b);
-            Console.WriteLine("\n \t Car \t\t\t Year \t Price(TL)");
-            foreach (Car car in carManager.GetCarsByBrandId(b))
+            static int DisplayMenu()
             {
-                Console.WriteLine("{0} - {1} \t {2} \t {3}", car.Id, car.Description, car.ModelYear, car.DailyPrice);
+                Console.WriteLine("\n========================================");
+                Console.WriteLine("So Car Gallery");
+                Console.WriteLine();
+                Console.WriteLine("1. Test BrandManager");
+                Console.WriteLine("2. Test ColorManager");
+                Console.WriteLine("3. Test CarManager");
+                Console.WriteLine("4. Exit");
+                Console.WriteLine("Please write the id of the test to perform");
+                var result = Console.ReadLine();
+                return Convert.ToInt32(result);
             }
-
-            //Get Cars by ColorId
-            Console.WriteLine("\nSelect a ColorId to list the cars (1-6)");
-            int c = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("=========== All cars in Car Manager with ColorId {0}) ===========", c);
-            Console.WriteLine("\n \t Car \t\t\t Year \t Price(TL)");
-            foreach (Car car in carManager.GetCarsByColorId(c))
+               
+            static void DisplayMenuTest()
             {
-                Console.WriteLine("{0} - {1} \t {2} \t {3}", car.Id, car.Description, car.ModelYear, car.DailyPrice);
-            }
+                int userInput = 0;
+                do
+                {
+                    userInput = DisplayMenu();
+                    Console.WriteLine();
+                    switch (userInput)
+                    {
+                        case 1:
+                            BrandManagerTest();
+                            break;
+                        case 2:
+                            ColorManagerTest();
+                            break;
+                        case 3:
+                            CarManagerTest();
+                            break;
+                    }
 
+                } while (userInput != 4);
+            }
         }
 
-        private static void ListAllVehicles(ICarService carService)
+        private static void CarManagerTest()
         {
-            Console.WriteLine("\n=========== All cars in Car Manager ===========");
-            Console.WriteLine("\n \t Car \t\t\t Year \t Price(TL) \t BrandId \t ColorId");
+            CarManager carManager = new CarManager(new EfCarDal());
 
-            foreach (Car car in carService.GetAllCars())
+            ListAllCars(carManager);
+
+            Console.WriteLine("\nThe car with id 5 is ");
+            Car carToShow = carManager.GetCarById(5);
+            Console.WriteLine("\nID\tCar\t\t\tYear\tPrice(TL)\tColorID\tBrandID");
+            Console.WriteLine("{0}\t{1}\t{2}\t{3}\t\t{4}\t{5}", carToShow.Id, carToShow.Description, carToShow.ModelYear, carToShow.DailyPrice, carToShow.ColorId, carToShow.BrandId);
+
+            ListCarsWithDetails(carManager);
+            carManager.Add(new Car() { BrandId = 2, ColorId = 4, Description = "BMW X5 XDrive30d", DailyPrice = 275000, ModelYear = 2017 });
+            Console.WriteLine("\n** New car added to db =>");
+
+            ListCarsWithDetails(carManager);
+
+            carManager.Update(new Car() { Id = 11, BrandId = 2, ColorId = 4, Description = "BMW X5 XDrive30d", DailyPrice = 275000, ModelYear = 2018 });
+            Console.WriteLine("\n** Car 11 is updated on db =>");
+
+            ListCarsWithDetails(carManager);
+
+            carManager.Delete(new Car() { Id = 11, BrandId = 2, ColorId = 4, Description = "BMW X5 XDrive30d", DailyPrice = 275000, ModelYear = 2018 });
+            Console.WriteLine("\n**Car 11 is deleted from db =>");
+
+            ListCarsWithDetails(carManager);
+
+            static void ListAllCars(ICarService carService)
             {
-                Console.WriteLine("{0} - {1} \t {2} \t {3} \t {4} \t\t {5}", car.Id, car.Description, car.ModelYear, car.DailyPrice, car.BrandId, car.ColorId);
+                Console.WriteLine("\n=========== All cars in Car Manager ===========");
+                Console.WriteLine("\n \t Car \t\t\t Year \t Price(TL) \t BrandId \t ColorId");
+
+                foreach (Car car in carService.GetAllCars())
+                {
+                    Console.WriteLine("{0} - {1} \t {2} \t {3} \t {4} \t\t {5}", car.Id, car.Description, car.ModelYear, car.DailyPrice, car.BrandId, car.ColorId);
+                }
+            }
+
+            static void ListCarsWithDetails(CarManager carManager)
+            {
+                Console.WriteLine("\n=========== All cars in Car Manager with Details ===========");
+                Console.WriteLine("\nID\tCar\t\t\tYear\tPrice(TL)\tColor\tBrand");
+
+                foreach (var carDto in carManager.GetCarDetails())
+                {
+                    Console.WriteLine("{0}\t{1}\t{2}\t{3}\t\t{4}\t{5}", carDto.Id, carDto.Description, carDto.ModelYear, carDto.DailyPrice, carDto.ColorName, carDto.BrandName);
+                }
+            }
+        }
+
+        private static void BrandManagerTest()
+        {
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+
+            ListBrands(brandManager);
+
+            brandManager.Add(new Brand() { BrandName = "Suzaki" });
+            Console.WriteLine("\n** Suzuki added to db =>");
+
+            ListBrands(brandManager);
+
+            brandManager.Update(new Brand() { BrandId = 5, BrandName = "Suzuki" });
+            Console.WriteLine("\n** Suzuki is corrected at db =>");
+
+            ListBrands(brandManager);
+
+            brandManager.Delete(new Brand() { BrandId = 5, BrandName = "Suzuki" });
+            Console.WriteLine("\n** Suzuki deleted from db =>");
+
+            ListBrands(brandManager);
+
+            static void ListBrands(BrandManager brandManager)
+            {
+                Console.WriteLine("==== Brands in BrandManager ====");
+                Console.WriteLine("Id \t Brand");
+                foreach (var brand in brandManager.GetAllBrands())
+                {
+                    Console.WriteLine("{0} \t {1}", brand.BrandId, brand.BrandName);
+                }
+            }
+        }
+
+        private static void ColorManagerTest()
+        {
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+
+            ListAllColors(colorManager);
+
+            colorManager.Add(new Color() { ColorName = "Selver" });
+            Console.WriteLine("\n** Selver added to db =>");
+
+            ListAllColors(colorManager);
+
+            colorManager.Update(new Color() { ColorId = 7, ColorName = "Silver" });
+            Console.WriteLine("\n** Silver is corrected at db=>");
+
+            ListAllColors(colorManager);
+
+            colorManager.Delete(new Color() { ColorId = 7, ColorName = "Silver" });
+            Console.WriteLine("\n** Silver is deleted from db=>");
+
+            ListAllColors(colorManager);
+
+            static void ListAllColors(ColorManager colorManager)
+            {
+                Console.WriteLine("==== Colors in ColorManager ====");
+                Console.WriteLine("Id \t Color");
+                foreach (var color in colorManager.GetAllColors())
+                {
+                    Console.WriteLine("{0} \t {1}", color.ColorId, color.ColorName);
+                }
             }
         }
     }
+
+    
+
 }
