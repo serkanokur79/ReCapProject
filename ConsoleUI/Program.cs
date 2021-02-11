@@ -62,9 +62,11 @@ namespace ConsoleUI
             ListAllCars(carManager);
 
             Console.WriteLine("\nThe car with id 5 is ");
-            Car carToShow = carManager.GetCarById(5);
+            var carToShowRes = carManager.GetCarById(5);
+            Car carToShow = carToShowRes.Data;
             Console.WriteLine("\nID\tCar\t\t\tYear\tPrice(TL)\tColorID\tBrandID");
             Console.WriteLine("{0}\t{1}\t{2}\t{3}\t\t{4}\t{5}", carToShow.Id, carToShow.Description, carToShow.ModelYear, carToShow.DailyPrice, carToShow.ColorId, carToShow.BrandId);
+            Console.WriteLine(carToShowRes.Message);
 
             ListCarsWithDetails(carManager);
             carManager.Add(new Car() { BrandId = 2, ColorId = 4, Description = "BMW X5 XDrive30d", DailyPrice = 275000, ModelYear = 2017 });
@@ -87,7 +89,7 @@ namespace ConsoleUI
                 Console.WriteLine("\n=========== All cars in Car Manager ===========");
                 Console.WriteLine("\n \t Car \t\t\t Year \t Price(TL) \t BrandId \t ColorId");
 
-                foreach (Car car in carService.GetAllCars())
+                foreach (Car car in carService.GetAllCars().Data)
                 {
                     Console.WriteLine("{0} - {1} \t {2} \t {3} \t {4} \t\t {5}", car.Id, car.Description, car.ModelYear, car.DailyPrice, car.BrandId, car.ColorId);
                 }
@@ -98,7 +100,7 @@ namespace ConsoleUI
                 Console.WriteLine("\n=========== All cars in Car Manager with Details ===========");
                 Console.WriteLine("\nID\tCar\t\t\tYear\tPrice(TL)\tColor\tBrand");
 
-                foreach (var carDto in carManager.GetCarDetails())
+                foreach (var carDto in carManager.GetCarDetails().Data)
                 {
                     Console.WriteLine("{0}\t{1}\t{2}\t{3}\t\t{4}\t{5}", carDto.Id, carDto.Description, carDto.ModelYear, carDto.DailyPrice, carDto.ColorName, carDto.BrandName);
                 }
@@ -130,7 +132,7 @@ namespace ConsoleUI
             {
                 Console.WriteLine("==== Brands in BrandManager ====");
                 Console.WriteLine("Id \t Brand");
-                foreach (var brand in brandManager.GetAllBrands())
+                foreach (var brand in brandManager.GetAllBrands().Data)
                 {
                     Console.WriteLine("{0} \t {1}", brand.BrandId, brand.BrandName);
                 }
@@ -162,10 +164,12 @@ namespace ConsoleUI
             {
                 Console.WriteLine("==== Colors in ColorManager ====");
                 Console.WriteLine("Id \t Color");
-                foreach (var color in colorManager.GetAllColors())
+                var AllColorsRes = colorManager.GetAllColors();
+                foreach (var color in AllColorsRes.Data)
                 {
                     Console.WriteLine("{0} \t {1}", color.ColorId, color.ColorName);
                 }
+                Console.WriteLine(AllColorsRes.Message);
             }
         }
     }

@@ -48,29 +48,33 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarDeleted);
         }
 
-        public List<Car> GetAllCars()
+        public IDataResult<List<Car>> GetAllCars()
         {
-           return  _carDal.GetAll();
+            if(DateTime.Now.Hour == 18)
+            {
+                return new ErrorDataResult<List<Car>>(_carDal.GetAll(), Messages.Maintenance);
+            }
+           return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarsListed);
         }
 
-        public Car GetCarById(int Id)
+        public IDataResult<Car> GetCarById(int Id)
         {
-            return _carDal.Get(c => c.Id == Id);
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == Id),Messages.CarListedById);
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _carDal.GetCarDetails();
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.CarsListedWithDetails);
         }
 
-        public List<Car> GetCarsByBrandId(int Id)
+        public IDataResult<List<Car>> GetCarsByBrandId(int Id)
         {
-            return _carDal.GetAll(c => c.BrandId == Id);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == Id),Messages.CarsListedByBrandId);
         }
 
-        public List<Car> GetCarsByColorId(int Id)
+        public IDataResult<List<Car>> GetCarsByColorId(int Id)
         {
-            return _carDal.GetAll(c => c.ColorId == Id);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == Id),Messages.CarsListedByColorId);
         }
 
         public IResult Update(Car car)
