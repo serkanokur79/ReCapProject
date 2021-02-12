@@ -30,5 +30,13 @@ namespace Business.Constants
         public static string BrandListedById = "The brand has been listed according to BrandId";
         public static string ColorsListed = "The colors have been listed";
         public static string ColorListedById = "The color has been listed according to ColorId";
+
+        public static string RentalAdded = "The car has been added to the Rental";
+        public static string CarStillOnRent = "The car is still on rent. It cannot be added to Rentals.";
+        public static string RentalsListed = "Rentals have been listed.";
+        public static string RentalsListedWithDetails = "Rentals have been listed with details.";
+        public static string NoRentals = "There are no possible Rentals.";
+
+        public static string RentalNewCustomer = "Rental has a new Customer";
     }
 }

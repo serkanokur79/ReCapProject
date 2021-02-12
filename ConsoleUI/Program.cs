@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Concrete;
+using Business.Constants;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
@@ -25,7 +26,8 @@ namespace ConsoleUI
                 Console.WriteLine("1. Test BrandManager");
                 Console.WriteLine("2. Test ColorManager");
                 Console.WriteLine("3. Test CarManager");
-                Console.WriteLine("4. Exit");
+                Console.WriteLine("4. Test RentalManager");
+                Console.WriteLine("5. Exit");
                 Console.WriteLine("Please write the id of the test to perform");
                 var result = Console.ReadLine();
                 return Convert.ToInt32(result);
@@ -49,9 +51,79 @@ namespace ConsoleUI
                         case 3:
                             CarManagerTest();
                             break;
+                        case 4:
+                            RentalManagerTest();
+                            break;
                     }
 
-                } while (userInput != 4);
+                } while (userInput != 5);
+            }
+        }
+
+        private static void RentalManagerTest()
+        {
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+
+            ListAllRentals(rentalManager);
+            ListAllRentalsWithDetails(rentalManager);
+
+            Console.WriteLine("\n * Try to rent CarId=1 to CustomerId=3");
+            Console.WriteLine(rentalManager.AddRental(new Rental() { CarId = 1, CustomerId = 3, RentDate = DateTime.Now }).Message);
+
+            Console.WriteLine("\n ** Try to rent CarId=2 to CustomerId=3");
+            Console.WriteLine(rentalManager.AddRental(new Rental() { CarId = 2, CustomerId = 3, RentDate = DateTime.Now }).Message);
+            rentalManager.AddRental(new Rental() { CarId = 2, CustomerId = 3, RentDate = DateTime.Now });
+           
+            ListAllRentalsWithDetails(rentalManager);
+
+            Console.WriteLine("\n*** Try to rent CarId=3 to CustomerId=4");
+            Console.WriteLine(rentalManager.AddRental(new Rental() { CarId = 3, CustomerId = 4, RentDate = DateTime.Now }).Message);
+            ListAllRentalsWithDetails(rentalManager);
+            
+
+
+            static void ListAllRentals(RentalManager rentalManager)
+            {
+                Console.WriteLine("\n=========== All cars in Rental ===========");
+                Console.WriteLine("\nID\tCarId\tCustomerId\tRentalDate\tReturnDate");
+
+                var rentals = rentalManager.GetAllRentals();
+
+                if (rentals.Success)
+                {
+                    foreach (var rental in rentalManager.GetAllRentals().Data)
+                    {
+                        Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}", rental.Id, rental.CarId, rental.CustomerId, rental.RentDate, rental.ReturnDate);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine(Messages.NoRentals);
+                }
+
+                
+            }
+
+            static void ListAllRentalsWithDetails(RentalManager rentalManager)
+            {
+                Console.WriteLine("\n=========== All cars in Rental with Details ===========");
+                Console.WriteLine("\nID\tCarId\tCarName\t\t\tCustomer\tCompany\t\tRentalDate\t\tReturnDate");
+
+                var rentals = rentalManager.GetAllRentalsWithDetails();
+
+                if (rentals.Success)
+                {
+                    foreach (var rentalDetailDto in rentalManager.GetAllRentalsWithDetails().Data)
+                    {
+                        Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", rentalDetailDto.Id, rentalDetailDto.CarId, rentalDetailDto.CarName, rentalDetailDto.UserName, rentalDetailDto.CompanyName, rentalDetailDto.RentDate, rentalDetailDto.ReturnDate);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine(Messages.NoRentals);
+                }
+
+
             }
         }
 
