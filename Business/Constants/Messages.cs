@@ -38,5 +38,18 @@ namespace Business.Constants
         public static string NoRentals = "There are no possible Rentals.";
 
         public static string RentalNewCustomer = "Rental has a new Customer";
+
+        public static string UsersListed = "Users have been listed";
+        public static string CustomerAdded = "Customer has been added.";
+        public static string CustomerDeleted = "Customer has been deleted.";
+        public static string CustomerUpdated = "Customer has been updated.";
+        public static string UserAdded = "User has been added.";
+        public static string UserDeleted = "User has been deleted.";
+        public static string UserListedById = "User has been listed by id.";
+        public static string UserUpdated = "User has been updated.";
+
+        public static string RentalDeleted { get; internal set; }
+        public static string RentalListedById { get; internal set; }
+        public static string RentalUpdated { get; internal set; }
     }
 }

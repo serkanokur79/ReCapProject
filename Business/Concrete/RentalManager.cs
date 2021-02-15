@@ -43,7 +43,15 @@ namespace Business.Concrete
                 return new SuccessResult(Messages.RentalAdded);
             }
         }
-               
+
+        public IResult DeleteRental(Rental rental)
+        {
+            Rental rentalToDelete = _rentalDal.GetAll().Find(r => r.CarId == rental.CarId);
+            _rentalDal.Delete(rentalToDelete);
+            return new SuccessResult(Messages.RentalDeleted);
+
+        }
+
         public IDataResult<List<Rental>> GetAllRentals()
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.RentalsListed);
@@ -52,6 +60,25 @@ namespace Business.Concrete
         public IDataResult<List<RentalDetailDto>> GetAllRentalsWithDetails()
         {
             return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalsWithDetails(), Messages.RentalsListedWithDetails);
+        }
+
+        public IDataResult<Rental> GetRentalById(int id)
+        {
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r=>r.Id == id), Messages.RentalListedById);
+        }
+
+        public IResult UpdateRental(Rental rental)
+        {
+            Rental rentalToUpdate = _rentalDal.GetAll().Find(r => r.CarId == rental.CarId);
+
+            rentalToUpdate.CarId = rental.CarId;
+            rentalToUpdate.CustomerId = rental.CustomerId;
+            rentalToUpdate.RentDate = rental.RentDate ;
+            rentalToUpdate.ReturnDate = rental.ReturnDate;
+
+            _rentalDal.Update(rentalToUpdate);
+
+            return new SuccessResult(Messages.RentalUpdated);
         }
     }
 }
