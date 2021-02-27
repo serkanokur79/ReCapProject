@@ -48,8 +48,15 @@ namespace Business.Constants
         public static string UserListedById = "User has been listed by id.";
         public static string UserUpdated = "User has been updated.";
 
-        public static string RentalDeleted { get; internal set; }
-        public static string RentalListedById { get; internal set; }
-        public static string RentalUpdated { get; internal set; }
+        public static string RentalDeleted = "Rental has been deleted.";
+        public static string RentalListedById = "Rental has been listed by id.";
+        public static string RentalUpdated = "Rental has been updated.";
+
+        public static string CarImageLimitExceeded = "More than 5 images cannot be added";
+        public static string NoCarImages = "The car does NOT have any images";
+
+        public static string CarImageDeleted = "Car Image deleted";
+        public static string CarImageAdded = "Car Image added";
+        public static string CarImageUpdated = "Car Image updated";
     }
 }
