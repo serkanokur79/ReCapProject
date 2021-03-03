@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -22,6 +23,7 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
 
+        [SecuredOperation("Manager,Admin")]
         [ValidationAspect(typeof(RentalValidator))]
         public IResult AddRental(Rental rental)
         {
@@ -50,6 +52,7 @@ namespace Business.Concrete
             }
         }
 
+        [SecuredOperation("Manager,Admin")]
         public IResult DeleteRental(Rental rental)
         {
             Rental rentalToDelete = _rentalDal.GetAll().Find(r => r.CarId == rental.CarId);
@@ -58,21 +61,25 @@ namespace Business.Concrete
 
         }
 
+        [SecuredOperation("Manager,Admin")]
         public IDataResult<List<Rental>> GetAllRentals()
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.RentalsListed);
         }
 
+        [SecuredOperation("Manager,Admin")]
         public IDataResult<List<RentalDetailDto>> GetAllRentalsWithDetails()
         {
             return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalsWithDetails(), Messages.RentalsListedWithDetails);
         }
 
+        [SecuredOperation("Manager,Admin")]
         public IDataResult<Rental> GetRentalById(int id)
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(r=>r.Id == id), Messages.RentalListedById);
         }
 
+        [SecuredOperation("Manager,Admin")]
         public IResult UpdateRental(Rental rental)
         {
             Rental rentalToUpdate = _rentalDal.GetAll().Find(r => r.CarId == rental.CarId);
