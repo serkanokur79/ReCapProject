@@ -2,6 +2,9 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
@@ -23,6 +26,8 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
 
+        [TransactionScopeAspect]
+        [CacheRemoveAspect("IRentalManager.Get")]
         [SecuredOperation("Manager,Admin")]
         [ValidationAspect(typeof(RentalValidator))]
         public IResult AddRental(Rental rental)
@@ -51,7 +56,7 @@ namespace Business.Concrete
                 return new SuccessResult(Messages.RentalAdded);
             }
         }
-
+        [TransactionScopeAspect]
         [SecuredOperation("Manager,Admin")]
         public IResult DeleteRental(Rental rental)
         {
@@ -61,12 +66,16 @@ namespace Business.Concrete
 
         }
 
+        [PerformanceAspect(5)]
+        [CacheAspect]
         [SecuredOperation("Manager,Admin")]
         public IDataResult<List<Rental>> GetAllRentals()
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.RentalsListed);
         }
 
+        [PerformanceAspect(5)]
+        [CacheAspect]
         [SecuredOperation("Manager,Admin")]
         public IDataResult<List<RentalDetailDto>> GetAllRentalsWithDetails()
         {

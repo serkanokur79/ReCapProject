@@ -2,6 +2,9 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
@@ -22,6 +25,7 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
 
+        [CacheRemoveAspect("IBrandManager.Get")]
         [SecuredOperation("Manager,Admin")]
         [ValidationAspect(typeof(BrandValidator))]
         public IResult Add(Brand brand)
@@ -33,6 +37,7 @@ namespace Business.Concrete
 
         }
 
+        [CacheRemoveAspect("IBrandManager.Get")]
         [SecuredOperation("Manager,Admin")]
         public IResult Delete(Brand brand)
         {
@@ -41,6 +46,8 @@ namespace Business.Concrete
 
         }
 
+        [PerformanceAspect(5)]
+        [CacheAspect]
         [SecuredOperation("Manager.getall,Manager,Admin")]
         public IDataResult<List<Brand>> GetAllBrands()
         {
@@ -53,12 +60,22 @@ namespace Business.Concrete
             return new SuccessDataResult<Brand>(_brandDal.Get(b => b.BrandId == brandId), Messages.BrandListedById);
         }
 
+        [CacheRemoveAspect("IBrandManager.Get")]
         [SecuredOperation("Manager,Admin")]
+        [ValidationAspect(typeof(BrandValidator))]
         public IResult Update(Brand brand)
         {
             _brandDal.Update(brand);
             return new SuccessResult(Messages.BrandUpdated);
 
+        }
+
+        [TransactionScopeAspect]
+        public IResult TransactionalTest(Brand brand)
+        {
+            _brandDal.Add(brand);
+            _brandDal.Update(brand);
+            return null;
         }
     }
 }

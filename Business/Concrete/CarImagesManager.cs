@@ -14,6 +14,9 @@ using Core.Utilities.Helpers;
 using System.IO;
 using System.Linq;
 using Business.BusinessAspects.Autofac;
+using Core.Aspects.Autofac.Transaction;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
 
 namespace Business.Concrete
 {
@@ -27,6 +30,8 @@ namespace Business.Concrete
             _carImageDal = carImageDal;
         }
 
+        [TransactionScopeAspect]
+        [CacheRemoveAspect("ICarImageManager.Get")]
         [SecuredOperation("Manager,Admin")]
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Add(IFormFile file, CarImage carImage)
@@ -51,6 +56,8 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarImageDeleted);
         }
 
+        [TransactionScopeAspect]
+        [CacheRemoveAspect("ICarImageManager.Get")]
         [SecuredOperation("Manager,Admin")]
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Update(IFormFile file, CarImage carImage)
@@ -68,12 +75,15 @@ namespace Business.Concrete
             return new SuccessDataResult<CarImage>(_carImageDal.Get(p => p.Id == id));
         }
 
+        [PerformanceAspect(5)]
+        [CacheAspect]
         [SecuredOperation("Manager,Admin")]
         [ValidationAspect(typeof(CarImageValidator))]
         public IDataResult<List<CarImage>> GetAll()
         {
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
         }
+
 
         [SecuredOperation("Manager,Admin")]
         [ValidationAspect(typeof(CarImageValidator))]
