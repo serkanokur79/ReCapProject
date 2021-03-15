@@ -45,13 +45,12 @@ namespace Business.Concrete
 
         [PerformanceAspect(5)]
         [CacheAspect]
-        [SecuredOperation("Manager,Admin")]
         public IDataResult<List<Customer>> GetAllCustomers()
         {
             return new SuccessDataResult<List<Customer>>(_customerDal.GetAll()); 
         }
 
-        [SecuredOperation("Manager,Admin")]
+       
         public IDataResult<Customer> GetCustomerById(int customerId)
         {
             return new SuccessDataResult<Customer>(_customerDal.Get(c=>c.Id == customerId));

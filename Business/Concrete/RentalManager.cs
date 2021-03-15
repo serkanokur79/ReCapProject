@@ -68,7 +68,6 @@ namespace Business.Concrete
 
         [PerformanceAspect(5)]
         [CacheAspect]
-        [SecuredOperation("Manager,Admin")]
         public IDataResult<List<Rental>> GetAllRentals()
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.RentalsListed);
@@ -76,13 +75,12 @@ namespace Business.Concrete
 
         [PerformanceAspect(5)]
         [CacheAspect]
-        [SecuredOperation("Manager,Admin")]
         public IDataResult<List<RentalDetailDto>> GetAllRentalsWithDetails()
         {
             return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalsWithDetails(), Messages.RentalsListedWithDetails);
         }
 
-        [SecuredOperation("Manager,Admin")]
+       
         public IDataResult<Rental> GetRentalById(int id)
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(r=>r.Id == id), Messages.RentalListedById);

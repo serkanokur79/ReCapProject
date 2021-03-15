@@ -28,7 +28,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.UserAdded);
         }
 
-        [SecuredOperation("Manager,Admin")]
+      
         public IDataResult<User> GetByMail(string email)
         {
             return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email));
@@ -41,13 +41,13 @@ namespace Business.Concrete
             return new SuccessResult(Messages.UserDeleted);
         }
 
-        [SecuredOperation("Manager,Admin")]
+       
         public IDataResult<User> GetUserById(int id)
         {
             return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id), Messages.UserListedById);
         }
 
-        [SecuredOperation("Manager,Admin")]
+        
         public IDataResult<List<User>> GetAllUsers()
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.UsersListed);

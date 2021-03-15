@@ -68,7 +68,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarImageUpdated);
         }
 
-        [SecuredOperation("Manager,Admin")]
+        
         [ValidationAspect(typeof(CarImageValidator))]
         public IDataResult<CarImage> Get(int id)
         {
@@ -77,7 +77,7 @@ namespace Business.Concrete
 
         [PerformanceAspect(5)]
         [CacheAspect]
-        [SecuredOperation("Manager,Admin")]
+       
         [ValidationAspect(typeof(CarImageValidator))]
         public IDataResult<List<CarImage>> GetAll()
         {
@@ -85,7 +85,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("Manager,Admin")]
+      
         [ValidationAspect(typeof(CarImageValidator))]
         public IDataResult<List<CarImage>> GetImagesByCarId(int id)
         {

@@ -44,13 +44,13 @@ namespace Business.Concrete
 
         [PerformanceAspect(5)]
         [CacheAspect]
-        [SecuredOperation("Manager,Admin")]
+       
         public IDataResult<List<Color>> GetAllColors()
         {
             return new SuccessDataResult<List<Color>>( _colorDal.GetAll(), Messages.ColorsListed);
         }
 
-        [SecuredOperation("Manager,Admin")]
+       
         public IDataResult<Color> GetColorById(int colorId)
         {
             return new SuccessDataResult<Color>(_colorDal.Get(c => c.ColorId == colorId), Messages.ColorListedById);

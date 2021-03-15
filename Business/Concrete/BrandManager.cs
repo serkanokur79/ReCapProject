@@ -48,13 +48,13 @@ namespace Business.Concrete
 
         [PerformanceAspect(5)]
         [CacheAspect]
-        [SecuredOperation("Manager.getall,Manager,Admin")]
+        
         public IDataResult<List<Brand>> GetAllBrands()
         {
             return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(), Messages.BrandsListed);
         }
 
-        [SecuredOperation("Manager,Admin")]
+        
         public IDataResult<Brand> GetBrandById(int brandId)
         {
             return new SuccessDataResult<Brand>(_brandDal.Get(b => b.BrandId == brandId), Messages.BrandListedById);

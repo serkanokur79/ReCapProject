@@ -69,7 +69,7 @@ namespace Business.Concrete
         }
 
         [CacheAspect]
-        [SecuredOperation("Manager,Admin")]
+        
         public IDataResult<Car> GetCarById(int Id)
         {
             return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == Id),Messages.CarListedById);
@@ -77,19 +77,19 @@ namespace Business.Concrete
 
         [PerformanceAspect(5)]
         [CacheAspect]
-        [SecuredOperation("Manager,Admin")]
+        
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.CarsListedWithDetails);
         }
 
-        [SecuredOperation("Manager,Admin")]
+       
         public IDataResult<List<Car>> GetCarsByBrandId(int Id)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == Id),Messages.CarsListedByBrandId);
         }
 
-        [SecuredOperation("Manager,Admin")]
+        
         public IDataResult<List<Car>> GetCarsByColorId(int Id)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == Id),Messages.CarsListedByColorId);
